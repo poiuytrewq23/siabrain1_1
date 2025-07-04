@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    async function askGPT(question) {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer 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"
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: question }]
+        })
+      });
+
+      const data = await response.json();
+      const answer = data.choices[0].message.content;
+      window.AppInventor.setWebViewString(answer); // Send back to Kodular
+    }
+
+    function getQuery() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const question = urlParams.get("q");
+      if (question) askGPT(question);
+    }
+
+    window.onload = getQuery;
+  </script>
+</head>
+<body>
+  <h2>SIA Thinking...</h2>
+</body>
+</html>
